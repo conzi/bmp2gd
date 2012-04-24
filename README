@@ -1,0 +1,6 @@
+BMP2GD库，php版本，可用于配合php的GD库做各种格式转换。
+源代码作者为mehmet emin akyüz ，见：http://www.phpclasses.org/package/5916-PHP-Convert-images-in-the-BMP-format.html
+但源代码对height小于0的bmp文件的处理有bug，并且也不支持文件流直接输入。
+
+我在此基础上做了一些调整，支持文件流输入，修复了bug。
+因联系不上作者，先丢到这里来。大家参考就是
