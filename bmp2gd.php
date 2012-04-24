@@ -10,7 +10,7 @@
 
 require_once dirname(__FILE__).'/bitops.php';
 
-//update by conzi @2012-03-31 ,为支持数据流直接转换成png,做了一些调整
+//2012-03-31 update by conzi  ,为支持数据流传入,做了一些调整
 class Bmp2gd {
 	static $compressionTypes=array(0=>"RGB",1=>"RLE8",2=>"RLE4",3=>"BITFIELD",4=>"JPEG",5=>"PNG");
 	
@@ -20,20 +20,15 @@ class Bmp2gd {
 	*/
 	static function createFromBMP($file)
 	{		
-		//var_dump($file);
-
-
-
+		
 		$size=strlen($file);
 
 		$offset = 0;
 		
 		$header=substr($file,$offset,14); 
 		$offset +=14;
-		//var_dump($header);
 
 		$header=unpack('C2type/Lsize/vreservedA/vreservedB/Loffset',$header);
-		//print_r($header);
 
 
 		if($header['size']!=$size){
@@ -67,11 +62,9 @@ class Bmp2gd {
 
 		$rowbytes= floor(($dibHeader['width'] * $dibHeader['bpp'] - 1) / 32) * 4 + 4;
 		
-	//	var_dump($dibHeader);
 
 		$img=imagecreatetruecolor($dibHeader['width'],abs($dibHeader['height']));
 		$white=imagecolorallocate($img,0xff,0xff,0xff);
-		//var_dump($dibHeader);
 
 		if($dibHeader['bpp']==32){
 			if($dibHeader['height']>0){ // for bottom to top bitmaps
@@ -95,7 +88,6 @@ class Bmp2gd {
 				}
 			}
 		} else if($dibHeader['bpp']==24){
-	//		var_dump($dibHeader);
 			if($dibHeader['height']>0){
 				for($y=1;$y<=$dibHeader['height'];++$y){
 					for($x=0;$x<$dibHeader['width'];++$x){
@@ -286,17 +278,14 @@ class Bmp2gd {
 					}
 					$skip = $rowbytes -1 - floor(($dibHeader['width'] - 1)/8);
 					if($skip){
-						//fread($f, $skip);
 						$offset +=$skip;
 					}
 				}
 			}
 		} else {
-			// invalid bmp
 			return false;
 		}
-		
-	//	fclose($f);
+
 		return $img;
 	}
 }
